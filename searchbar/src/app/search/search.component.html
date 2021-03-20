@@ -1,0 +1,49 @@
+<div class="container-fluid">
+    <div class="search-bar">
+      <form (keyup.enter)="searchResult()">
+        <div class="input-group">
+          <input
+            type="text"
+            class="form-control"
+            name="searchName"
+            [(ngModel)]="searchName"
+            placeholder="Search..."
+          />
+          <span class="input-group-btn">
+            <button type="submit" class="btn btn-default">
+              <i class="fa fa-search icon" aria-hidden="true"></i>
+            </button>
+          </span>
+        </div>
+      </form>
+  </div>
+  <div *ngIf="searchName; then thenBlock; else elseBlock"></div>
+    <ng-template #elseBlock>
+      <header class="page-header">
+        Search Albums by Artist Name:
+      </header>
+    </ng-template>
+  
+    <ng-template #thenBlock>
+      <header class="page-header">
+        {{ count }} results for {{ searchName }} | 
+        <label for="pageSize">Select Page Size : </label>
+        <select name="pageSize" class="pageSize" (change) = "onSelect($event)"> 
+          <option>select</option>
+            <option *ngFor = "let v of sizeOption">{{ v }}</option>
+        </select>     
+      </header>
+      <ul class="results">
+          <li *ngFor="let a of album_final; let i = index" class="album-card">
+            <h5 class="album-name">{{ a.artistName }}</h5>
+            <h5 class="album-collection">{{ a.collectionName }}</h5>
+            <img class="album-image" src="{{ a.artworkUrl100 }}" />
+            <div class="btns">
+              <button class="btnb btn-like" [class.like] = "like.has(i)" (click) = "onLike(i)" >LIKE</button>
+              <button class="btnb btn-dislike" [class.dislike] = "dislike.has(i)" (click) = "onDislike(i)">DISLIKE</button>
+            </div>
+          </li>
+      </ul>
+    </ng-template>
+</div>
+  
